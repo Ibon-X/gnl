@@ -6,20 +6,18 @@
 /*   By: ipresno- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 11:30:14 by ipresno-          #+#    #+#             */
-/*   Updated: 2022/10/17 13:34:25 by ipresno-         ###   ########.fr       */
+/*   Updated: 2022/10/18 17:43:15 by ipresno-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <fcntl.h>
 
-char	*read_and_save(int fd, char *save)
+char	*ft_read_and_save(int fd, char *save)
 {
 	char	*buff;
 	int		read_bytes;
 
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buff = malloc(sizeof(*buff) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
 	read_bytes = 1;
@@ -48,7 +46,7 @@ char	*ft_get_line(char *save)
 		return (NULL);
 	while (save[i] && save[i] != '\n')
 		i++;
-	line = (char *)malloc(sizeof(char) * (i + 2));
+	line = malloc(sizeof(*line) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -70,7 +68,7 @@ char	*ft_save(char *save)
 {
 	int		i;
 	int		j;
-	char	*s;
+	char	*new_save;
 
 	i = 0;
 	while (save[i] && save[i] != '\n')
@@ -80,16 +78,16 @@ char	*ft_save(char *save)
 		free (save);
 		return (NULL);
 	}
-	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
-	if (!s)
+	new_save = malloc(sizeof(*new_save) * (ft_strlen(save) - i + 1));
+	if (!new_save)
 		return (NULL);
 	i++;
 	j = 0;
 	while (save[i])
-		s[j++] = save[i++];
-	s[j] = '\0';
+		new_save[j++] = save[i++];
+	new_save[j] = '\0';
 	free (save);
-	return (s);
+	return (new_save);
 }
 
 char	*get_next_line(int fd)
@@ -99,7 +97,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	save = read_and_save(fd, save);
+	save = ft_read_and_save(fd, save);
 	if (!save)
 		return (NULL);
 	line = ft_get_line(save);
